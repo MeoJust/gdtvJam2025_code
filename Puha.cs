@@ -4,41 +4,48 @@ public class Puha : MonoBehaviour
 {
     Player _player;
 
-    [SerializeField] Transform _target;
-    [SerializeField] Transform _bulletSpawnPoint;
-    [SerializeField] GameObject _bulletPrefab;
+    public Transform Target;
+    public Transform BulletSpawnPoint;
+    public GameObject BulletPrefab;
 
-    [SerializeField] float _bulletSpeed = 10f;
-    [SerializeField] float _bulletSpread = .1f;
+    float _bulletSpeed = 10f;
+    public float BulletSpread = .1f;
+    public float FireRate = .2f;
+    protected float TimeFromLastShot = 0f;
 
     void Start()
     {
         _player = GetComponentInParent<Player>();
 
         _player.Controls.onFoot.piu.performed += ctx => Piu();
+
+        _bulletSpeed = BulletPrefab.GetComponent<Bullet>().Speed;
     }
 
     void Update()
     {
-        transform.LookAt(_target);
+        transform.LookAt(Target);
+        TimeFromLastShot += Time.deltaTime;
     }
 
-    void Piu()
+    protected virtual void Piu()
     {
-        SpawnBullet();
+        print("Piu");
     }
 
-    void SpawnBullet()
+    protected void SpawnBullet()
     {
-        GameObject bullet = Instantiate(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation);
+        if (TimeFromLastShot < FireRate) return;
+
+        GameObject bullet = Instantiate(BulletPrefab, BulletSpawnPoint.position, BulletSpawnPoint.rotation);
         
         Vector3 randomSpread = new Vector3(
-            Random.Range(-_bulletSpread, _bulletSpread),
-            Random.Range(-_bulletSpread, _bulletSpread),
+            Random.Range(-BulletSpread, BulletSpread),
+            Random.Range(-BulletSpread, BulletSpread),
             0
         );
         
-        Vector3 spreadDirection = (_bulletSpawnPoint.forward + randomSpread).normalized;
+        Vector3 spreadDirection = (BulletSpawnPoint.forward + randomSpread).normalized;
         bullet.GetComponent<Rigidbody>().linearVelocity = spreadDirection * _bulletSpeed;
     }
 }
