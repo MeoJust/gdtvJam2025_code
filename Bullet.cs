@@ -8,13 +8,11 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
-        print("Bullet created");
         Invoke("DestroySelf", Lifetime);
     }
 
     void DestroySelf()
     {
-        print("Bullet destroyed");
         Destroy(gameObject);
     }
 }

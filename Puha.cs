@@ -11,7 +11,7 @@ public class Puha : MonoBehaviour
     float _bulletSpeed = 10f;
     public float BulletSpread = .1f;
     public float FireRate = .2f;
-    protected float TimeFromLastShot = 0f;
+    public float TimeFromLastShot = 0f;
 
     void Start()
     {
@@ -30,7 +30,7 @@ public class Puha : MonoBehaviour
 
     protected virtual void Piu()
     {
-        print("Piu");
+        
     }
 
     protected void SpawnBullet()
