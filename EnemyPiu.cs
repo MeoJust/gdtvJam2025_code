@@ -7,6 +7,9 @@ public class EnemyPiu : Bullet
         if (other.gameObject.CompareTag("Player"))
         {
             print("Hit player");
+            other.gameObject.GetComponent<Health>().TakeDamage(1);
+
+            Destroy(gameObject);
         }
     }
 }
